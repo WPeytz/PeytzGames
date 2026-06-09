@@ -56,7 +56,7 @@ export const GAMES: Game[] = [
   },
   {
     slug: 'eloquiz',
-    title: 'EloQuiz.dk',
+    title: 'EloQuiz',
     tagline:
       'Adaptive math practice with an Elo-rating system — always playing at the edge of your ability.',
     url: 'https://eloquiz.dk',
