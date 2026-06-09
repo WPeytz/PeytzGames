@@ -55,8 +55,8 @@ export const GAMES: Game[] = [
     title: 'PeytzPvP',
     tagline:
       'Hardcore Games-style PvP for Minecraft Paper servers. Arenas, kits, one winner.',
-    url: 'https://peytzpvp.com',
-    embed: false,
+    url: 'https://www.peytzpvp.com',
+    embed: true,
     year: 2026,
     status: 'live',
   },
