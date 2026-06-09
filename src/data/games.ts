@@ -35,8 +35,8 @@ export const GAMES: Game[] = [
     title: 'LifeRunner.io',
     tagline:
       'A life simulation where time, energy, and money are limited — feel the tradeoffs.',
-    url: 'https://liferunner.io',
-    embed: false,
+    url: 'https://www.liferunner.io',
+    embed: true,
     year: 2026,
     status: 'live',
   },
