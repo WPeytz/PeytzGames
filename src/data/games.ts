@@ -36,7 +36,7 @@ export const GAMES: Game[] = [
   },
   {
     slug: 'liferunner',
-    title: 'LifeRunner.io',
+    title: 'LifeRunner',
     tagline:
       'A life simulation where time, energy, and money are limited — feel the tradeoffs.',
     url: 'https://www.liferunner.io',
