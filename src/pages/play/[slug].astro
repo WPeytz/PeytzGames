@@ -47,5 +47,114 @@ const { game } = Astro.props;
         allow="fullscreen; autoplay"
         loading="lazy"></iframe>
     </div>
+
+    {
+      game.leaderboard && (
+        <div
+          id="leaderboard"
+          data-game={game.slug}
+          data-origin={new URL(game.url).origin}
+          class="mt-8 max-w-md"
+        >
+          <div class="flex items-baseline justify-between gap-4">
+            <h2 class="text-2xl font-semibold tracking-tightest">
+              Leaderboard
+            </h2>
+            <p id="lb-status" class="text-sm text-fg-subtle" />
+          </div>
+          <ol
+            id="lb-list"
+            class="mt-4 divide-y divide-border rounded-xl border border-border bg-bg-elevated"
+          >
+            <li class="px-4 py-3 text-sm text-fg-subtle">Loading…</li>
+          </ol>
+        </div>
+      )
+    }
   </section>
 </BaseLayout>
+
+<script>
+  import { supabase } from '@/lib/supabase';
+
+  const root = document.getElementById('leaderboard');
+
+  if (root) {
+    const gameSlug = root.dataset.game!;
+    const gameOrigin = root.dataset.origin!;
+    const list = document.getElementById('lb-list')!;
+    const status = document.getElementById('lb-status')!;
+
+    async function loadLeaderboard() {
+      // Pull extra rows, then keep each player's best score.
+      const { data, error } = await supabase
+        .from('scores')
+        .select('score, profiles(username)')
+        .eq('game', gameSlug)
+        .order('score', { ascending: false })
+        .limit(50);
+
+      if (error || !data) {
+        list.innerHTML = `<li class="px-4 py-3 text-sm text-fg-subtle">Couldn't load the leaderboard.</li>`;
+        return;
+      }
+
+      const best = new Map<string, number>();
+      for (const row of data) {
+        const name =
+          (row.profiles as unknown as { username: string } | null)?.username ??
+          'anonymous';
+        if (!best.has(name)) best.set(name, row.score);
+      }
+      const top = [...best.entries()].slice(0, 10);
+
+      list.innerHTML =
+        top.length === 0
+          ? `<li class="px-4 py-3 text-sm text-fg-subtle">No scores yet — be the first.</li>`
+          : top
+              .map(
+                ([name, score], i) => `
+                  <li class="flex items-center justify-between px-4 py-2.5 text-sm">
+                    <span class="flex items-center gap-3">
+                      <span class="w-5 text-right text-fg-subtle">${i + 1}</span>
+                      <span class="text-fg">${name.replace(/[<>&]/g, '')}</span>
+                    </span>
+                    <span class="font-medium text-accent-alt">${score.toLocaleString()}</span>
+                  </li>`,
+              )
+              .join('');
+    }
+
+    async function submitScore(score: number) {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const session = sessionData.session;
+      if (!session) {
+        status.textContent = 'Log in to post your scores.';
+        return;
+      }
+      const { error } = await supabase.from('scores').insert({
+        user_id: session.user.id,
+        game: gameSlug,
+        score,
+      });
+      if (!error) {
+        status.textContent = `Score saved: ${score.toLocaleString()}`;
+        loadLeaderboard();
+      }
+    }
+
+    window.addEventListener('message', (event) => {
+      if (event.origin !== gameOrigin) return;
+      const msg = event.data;
+      if (
+        msg?.type === 'blocks:gameover' &&
+        typeof msg.score === 'number' &&
+        msg.score > 0
+      ) {
+        submitScore(Math.floor(msg.score));
+      }
+    });
+
+    loadLeaderboard();
+  }
+</script>

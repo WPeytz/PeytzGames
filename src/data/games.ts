@@ -17,6 +17,9 @@ export type Game = {
   status: 'live' | 'beta' | 'coming soon';
   controls?: string;
   thumbnail?: string;
+  /** Show an online leaderboard on the play page (the game must report
+   * scores to the host page via postMessage). */
+  leaderboard?: boolean;
 };
 
 export const GAMES: Game[] = [
@@ -29,6 +32,7 @@ export const GAMES: Game[] = [
     year: 2026,
     status: 'live',
     controls: 'Click the board, then use the arrow keys.',
+    leaderboard: true,
   },
   {
     slug: 'liferunner',
