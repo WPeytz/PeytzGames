@@ -1,0 +1,28 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import GameCard from '@components/GameCard.astro';
+import { GAMES } from '@/data/games';
+import { LINKS } from '@/consts';
+---
+
+<BaseLayout>
+  <section class="container-wide pt-20 pb-12 sm:pt-28">
+    <h1 class="text-5xl sm:text-6xl font-semibold tracking-tightest">
+      <span class="text-gradient">Peytz</span>Games
+    </h1>
+    <p class="mt-5 max-w-xl text-lg text-fg-muted leading-relaxed">
+      Games made by <a
+        href={LINKS.personalSite}
+        class="text-fg underline decoration-border-strong underline-offset-4 hover:decoration-accent transition-colors"
+        >William Peytz</a
+      >. Original browser games and interactive experiments — new ones land
+      here as they're ready.
+    </p>
+  </section>
+
+  <section id="games" class="container-wide pb-24 scroll-mt-20">
+    <div class="grid gap-5 sm:grid-cols-2">
+      {GAMES.map((game) => <GameCard game={game} />)}
+    </div>
+  </section>
+</BaseLayout>

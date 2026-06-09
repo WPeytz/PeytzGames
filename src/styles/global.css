@@ -1,0 +1,30 @@
+@import '@fontsource-variable/geist';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-bg text-fg antialiased;
+    color-scheme: dark;
+  }
+
+  body {
+    @apply font-sans min-h-screen;
+  }
+
+  ::selection {
+    @apply bg-accent/40;
+  }
+}
+
+@layer components {
+  .container-wide {
+    @apply mx-auto w-full max-w-5xl px-5 sm:px-8;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent to-accent-alt bg-clip-text text-transparent;
+  }
+}
