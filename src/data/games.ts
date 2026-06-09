@@ -51,6 +51,16 @@ export const GAMES: Game[] = [
     status: 'live',
   },
   {
+    slug: 'eloquiz',
+    title: 'EloQuiz.dk',
+    tagline:
+      'Adaptive math practice with an Elo-rating system — always playing at the edge of your ability.',
+    url: 'https://eloquiz.dk',
+    embed: true,
+    year: 2025,
+    status: 'live',
+  },
+  {
     slug: 'peytzpvp',
     title: 'PeytzPvP',
     tagline:
