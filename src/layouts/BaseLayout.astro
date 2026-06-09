@@ -43,10 +43,37 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           </a>
           <a
             href={LINKS.personalSite}
-            class="text-fg-muted hover:text-fg transition-colors no-underline"
+            class="hidden sm:inline text-fg-muted hover:text-fg transition-colors no-underline"
           >
             williampeytz.com
           </a>
+          <div id="auth-area" class="flex items-center gap-2">
+            <a
+              href="/login"
+              data-auth="out"
+              class="text-fg-muted hover:text-fg transition-colors no-underline px-2 py-1"
+            >
+              Log in
+            </a>
+            <a
+              href="/register"
+              data-auth="out"
+              class="rounded-md bg-accent px-3 py-1.5 font-medium text-white hover:bg-accent/85 transition-colors no-underline"
+            >
+              Register
+            </a>
+            <span
+              data-auth="in"
+              id="auth-email"
+              class="hidden max-w-[16ch] truncate text-fg-muted"></span>
+            <button
+              data-auth="in"
+              id="logout-btn"
+              class="hidden rounded-md border border-border-strong px-3 py-1.5 text-fg-muted hover:border-accent hover:text-accent transition-colors"
+            >
+              Log out
+            </button>
+          </div>
         </nav>
       </div>
     </header>
@@ -79,5 +106,30 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         </div>
       </div>
     </footer>
+
+    <script>
+      import { supabase } from '@/lib/supabase';
+
+      const emailEl = document.getElementById('auth-email');
+      const logoutBtn = document.getElementById('logout-btn');
+
+      function render(session: import('@supabase/supabase-js').Session | null) {
+        document.querySelectorAll<HTMLElement>('[data-auth="out"]').forEach((el) => {
+          el.classList.toggle('hidden', !!session);
+        });
+        document.querySelectorAll<HTMLElement>('[data-auth="in"]').forEach((el) => {
+          el.classList.toggle('hidden', !session);
+        });
+        if (emailEl) emailEl.textContent = session?.user.email ?? '';
+      }
+
+      supabase.auth.getSession().then(({ data }) => render(data.session));
+      supabase.auth.onAuthStateChange((_event, session) => render(session));
+
+      logoutBtn?.addEventListener('click', async () => {
+        await supabase.auth.signOut();
+        window.location.href = '/';
+      });
+    </script>
   </body>
 </html>

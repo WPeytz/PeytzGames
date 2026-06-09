@@ -1,0 +1,132 @@
+---
+// Shared login/register form shell — the page passes mode and the script
+// branches on it.
+interface Props {
+  mode: 'login' | 'register';
+}
+
+const { mode } = Astro.props;
+const isLogin = mode === 'login';
+---
+
+<section class="container-wide flex justify-center py-20">
+  <div
+    class="w-full max-w-sm rounded-xl border border-border bg-bg-elevated p-8"
+  >
+    <h1 class="text-2xl font-semibold tracking-tightest">
+      {isLogin ? 'Log in' : 'Create an account'}
+    </h1>
+    <p class="mt-2 text-sm text-fg-muted">
+      {
+        isLogin
+          ? 'Welcome back to PeytzGames.'
+          : 'One account for every game on PeytzGames.'
+      }
+    </p>
+
+    <form id="auth-form" data-mode={mode} class="mt-6 flex flex-col gap-4">
+      <label class="flex flex-col gap-1.5 text-sm text-fg-muted">
+        Email
+        <input
+          type="email"
+          name="email"
+          required
+          autocomplete="email"
+          class="rounded-md border border-border-strong bg-bg px-3 py-2 text-fg outline-none focus:border-accent transition-colors"
+        />
+      </label>
+      <label class="flex flex-col gap-1.5 text-sm text-fg-muted">
+        Password
+        <input
+          type="password"
+          name="password"
+          required
+          minlength="8"
+          autocomplete={isLogin ? 'current-password' : 'new-password'}
+          class="rounded-md border border-border-strong bg-bg px-3 py-2 text-fg outline-none focus:border-accent transition-colors"
+        />
+      </label>
+
+      <p id="auth-message" class="hidden text-sm" role="alert"></p>
+
+      <button
+        type="submit"
+        id="auth-submit"
+        class="rounded-md bg-accent px-4 py-2 font-medium text-white hover:bg-accent/85 disabled:opacity-60 transition-colors"
+      >
+        {isLogin ? 'Log in' : 'Register'}
+      </button>
+    </form>
+
+    <p class="mt-6 text-sm text-fg-muted">
+      {
+        isLogin ? (
+          <>
+            No account?{' '}
+            <a href="/register" class="text-accent hover:underline no-underline">
+              Register
+            </a>
+          </>
+        ) : (
+          <>
+            Already have an account?{' '}
+            <a href="/login" class="text-accent hover:underline no-underline">
+              Log in
+            </a>
+          </>
+        )
+      }
+    </p>
+  </div>
+</section>
+
+<script>
+  import { supabase } from '@/lib/supabase';
+
+  const form = document.getElementById('auth-form') as HTMLFormElement;
+  const message = document.getElementById('auth-message')!;
+  const submit = document.getElementById('auth-submit') as HTMLButtonElement;
+
+  function show(text: string, isError: boolean) {
+    message.textContent = text;
+    message.classList.remove('hidden');
+    message.classList.toggle('text-red-400', isError);
+    message.classList.toggle('text-accent-alt', !isError);
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const email = String(data.get('email'));
+    const password = String(data.get('password'));
+
+    submit.disabled = true;
+    message.classList.add('hidden');
+
+    if (form.dataset.mode === 'login') {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) {
+        show(error.message, true);
+        submit.disabled = false;
+      } else {
+        window.location.href = '/';
+      }
+    } else {
+      const { data: result, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+      if (error) {
+        show(error.message, true);
+        submit.disabled = false;
+      } else if (result.session) {
+        window.location.href = '/';
+      } else {
+        show('Check your email for a confirmation link to finish signing up.', false);
+      }
+    }
+  });
+</script>
