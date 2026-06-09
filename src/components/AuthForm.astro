@@ -25,6 +25,27 @@ const isLogin = mode === 'login';
     </p>
 
     <form id="auth-form" data-mode={mode} class="mt-6 flex flex-col gap-4">
+      {
+        !isLogin && (
+          <label class="flex flex-col gap-1.5 text-sm text-fg-muted">
+            Username
+            <input
+              type="text"
+              name="username"
+              required
+              minlength="3"
+              maxlength="20"
+              pattern="[A-Za-z0-9_]+"
+              title="3–20 characters: letters, numbers, and underscores"
+              autocomplete="username"
+              class="rounded-md border border-border-strong bg-bg px-3 py-2 text-fg outline-none focus:border-accent transition-colors"
+            />
+            <span class="text-xs text-fg-subtle">
+              3–20 characters; letters, numbers, and underscores.
+            </span>
+          </label>
+        )
+      }
       <label class="flex flex-col gap-1.5 text-sm text-fg-muted">
         Email
         <input
@@ -115,9 +136,23 @@ const isLogin = mode === 'login';
         window.location.href = '/';
       }
     } else {
+      const username = String(data.get('username'));
+
+      const { data: taken } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('username', username)
+        .maybeSingle();
+      if (taken) {
+        show('That username is already taken.', true);
+        submit.disabled = false;
+        return;
+      }
+
       const { data: result, error } = await supabase.auth.signUp({
         email,
         password,
+        options: { data: { username } },
       });
       if (error) {
         show(error.message, true);

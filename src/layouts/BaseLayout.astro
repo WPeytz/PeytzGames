@@ -108,7 +108,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         document.querySelectorAll<HTMLElement>('[data-auth="in"]').forEach((el) => {
           el.classList.toggle('hidden', !session);
         });
-        if (emailEl) emailEl.textContent = session?.user.email ?? '';
+        if (emailEl)
+          emailEl.textContent =
+            session?.user.user_metadata?.username ?? session?.user.email ?? '';
       }
 
       supabase.auth.getSession().then(({ data }) => render(data.session));
