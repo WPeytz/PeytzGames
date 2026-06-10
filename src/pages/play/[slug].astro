@@ -41,6 +41,7 @@ const { game } = Astro.props;
 
     <div class="overflow-hidden rounded-xl border border-border bg-bg-elevated">
       <iframe
+        id="game-frame"
         src={game.url}
         title={game.title}
         class="block h-[85vh] min-h-[640px] w-full border-0"
@@ -73,6 +74,23 @@ const { game } = Astro.props;
     }
   </section>
 </BaseLayout>
+
+<script>
+  // Games that report their content height (embed:height via postMessage)
+  // get an iframe sized to fit, so there's no nested scrollbar.
+  const gameFrame = document.getElementById('game-frame') as HTMLIFrameElement;
+  const frameOrigin = new URL(gameFrame.src).origin;
+
+  window.addEventListener('message', (event) => {
+    if (event.origin !== frameOrigin) return;
+    const msg = event.data;
+    if (msg?.type === 'embed:height' && typeof msg.height === 'number') {
+      const height = Math.min(Math.max(Math.ceil(msg.height), 480), 4000);
+      gameFrame.style.height = `${height}px`;
+      gameFrame.style.minHeight = '0';
+    }
+  });
+</script>
 
 <script>
   import { supabase } from '@/lib/supabase';
