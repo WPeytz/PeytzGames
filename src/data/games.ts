@@ -24,6 +24,17 @@ export type Game = {
 
 export const GAMES: Game[] = [
   {
+    slug: 'gravityflipper',
+    title: 'GravityFlipper',
+    tagline:
+      "A precision puzzle-platformer where you can't jump — you flip gravity. Reach the portal across 10 single-screen levels.",
+    url: 'https://peytzgames.com/games/gravityflipper/',
+    embed: true,
+    year: 2026,
+    status: 'live',
+    controls: 'A/D or ←/→ to move · Space to flip gravity · R to restart.',
+  },
+  {
     slug: 'blocks',
     title: 'Blocks',
     tagline: 'An original falling-block puzzle. How long can you survive?',
