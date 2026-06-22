@@ -4,7 +4,7 @@ import { ArrowLeft, Maximize } from '@lucide/astro';
 import { GAMES } from '@/data/games';
 
 export function getStaticPaths() {
-  return GAMES.filter((game) => game.embed).map((game) => ({
+  return GAMES.filter((game) => game.embed && !game.hidden).map((game) => ({
     params: { slug: game.slug },
     props: { game },
   }));

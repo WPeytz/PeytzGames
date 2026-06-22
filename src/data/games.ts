@@ -17,6 +17,8 @@ export type Game = {
   status: 'live' | 'beta' | 'coming soon';
   controls?: string;
   thumbnail?: string;
+  /** Hide from the home grid and skip its /play page (config is kept). */
+  hidden?: boolean;
   /** Show an online leaderboard on the play page (the game must report
    * scores to the host page via postMessage). */
   leaderboard?: boolean;
@@ -76,6 +78,7 @@ export const GAMES: Game[] = [
     embed: true,
     year: 2025,
     status: 'live',
+    hidden: true,
   },
   {
     slug: 'peytzpvp',
