@@ -113,5 +113,6 @@ export const GAMES: Game[] = [
     status: 'live',
     controls: 'A/D or ←/→ to move · Space/Enter to start or restart.',
     thumbnail: '/thumbs/liftoffjump.svg',
+    leaderboard: true,
   },
 ];

@@ -172,7 +172,7 @@ const { game } = Astro.props;
       if (event.origin !== gameOrigin) return;
       const msg = event.data;
       if (
-        msg?.type === 'blocks:gameover' &&
+        msg?.type === `${gameSlug}:gameover` &&
         typeof msg.score === 'number' &&
         msg.score > 0
       ) {
