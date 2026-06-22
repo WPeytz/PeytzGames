@@ -44,6 +44,7 @@ export const GAMES: Game[] = [
     status: 'live',
     controls: 'Click the board, then use the arrow keys.',
     leaderboard: true,
+    thumbnail: '/thumbs/blocks.svg',
   },
   {
     slug: 'liferunner',
