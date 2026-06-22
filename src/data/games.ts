@@ -87,4 +87,16 @@ export const GAMES: Game[] = [
     year: 2026,
     status: 'live',
   },
+  {
+    slug: 'buildthefuture',
+    title: 'BuildTheFuture',
+    tagline:
+      'A trivia journey through the ages — answer your way from Ancient Egypt to the AI era.',
+    url: 'https://peytzgames.com/games/buildthefuture/',
+    embed: true,
+    year: 2024,
+    status: 'live',
+    controls: 'Type your answer, then press Check Answer.',
+    thumbnail: '/thumbs/buildthefuture.svg',
+  },
 ];

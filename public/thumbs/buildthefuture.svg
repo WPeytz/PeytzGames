@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" aria-label="BuildTheFuture">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#12151d"/>
+      <stop offset="1" stop-color="#0b0d12"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+    <linearGradient id="bar2" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#0891b2"/>
+      <stop offset="1" stop-color="#67e8f9"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.82" cy="0.2" r="0.5">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#bg)"/>
+  <rect width="800" height="450" fill="url(#glow)"/>
+
+  <!-- baseline -->
+  <rect x="120" y="372" width="560" height="3" rx="1.5" fill="#2c3346"/>
+
+  <!-- ascending timeline of eras -->
+  <g>
+    <rect x="138"  y="300" width="62" height="72"  rx="8" fill="url(#bar)" opacity="0.65"/>
+    <rect x="226"  y="262" width="62" height="110" rx="8" fill="url(#bar)" opacity="0.75"/>
+    <rect x="314"  y="214" width="62" height="158" rx="8" fill="url(#bar)" opacity="0.85"/>
+    <rect x="402"  y="170" width="62" height="202" rx="8" fill="url(#bar2)" opacity="0.9"/>
+    <rect x="490"  y="120" width="62" height="252" rx="8" fill="url(#bar2)"/>
+    <rect x="578"  y="78"  width="62" height="294" rx="8" fill="url(#bar2)"/>
+  </g>
+
+  <!-- progress dots climbing the tops -->
+  <g fill="#e8eaf2">
+    <circle cx="169" cy="300" r="6"/>
+    <circle cx="257" cy="262" r="6"/>
+    <circle cx="345" cy="214" r="6"/>
+    <circle cx="433" cy="170" r="6"/>
+    <circle cx="521" cy="120" r="6"/>
+  </g>
+  <polyline points="169,300 257,262 345,214 433,170 521,120 609,78"
+    fill="none" stroke="#e8eaf2" stroke-width="2.5" stroke-opacity="0.5"
+    stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- the future: a star above the tallest bar -->
+  <g transform="translate(609 50)" fill="#67e8f9">
+    <path d="M0 -30 L7 -9 L29 -9 L11 4 L18 26 L0 13 L-18 26 L-11 4 L-29 -9 L-7 -9 Z"/>
+  </g>
+</svg>
