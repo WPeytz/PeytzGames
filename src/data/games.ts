@@ -99,4 +99,16 @@ export const GAMES: Game[] = [
     controls: 'Type your answer, then press Check Answer.',
     thumbnail: '/thumbs/buildthefuture.svg',
   },
+  {
+    slug: 'liftoffjump',
+    title: 'LiftoffJump',
+    tagline:
+      'A Doodle Jump-style climb — auto-bounce an astronaut from city rooftops all the way to the Moon.',
+    url: 'https://peytzgames.com/games/liftoffjump/',
+    embed: true,
+    year: 2026,
+    status: 'live',
+    controls: 'A/D or ←/→ to move · Space/Enter to start or restart.',
+    thumbnail: '/thumbs/liftoffjump.svg',
+  },
 ];
