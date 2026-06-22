@@ -33,6 +33,7 @@ export const GAMES: Game[] = [
     year: 2026,
     status: 'live',
     controls: 'A/D or ←/→ to move · Space to flip gravity · R to restart.',
+    thumbnail: '/thumbs/gravityflipper.svg',
   },
   {
     slug: 'blocks',
