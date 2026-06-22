@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import { ArrowLeft, ArrowUpRight } from '@lucide/astro';
+import { ArrowLeft, Maximize } from '@lucide/astro';
 import { GAMES } from '@/data/games';
 
 export function getStaticPaths() {
@@ -30,13 +30,14 @@ const { game } = Astro.props;
           {game.controls && <span class="block mt-1">{game.controls}</span>}
         </p>
       </div>
-      <a
-        href={game.url}
-        class="inline-flex items-center gap-1 rounded-md border border-border bg-bg-elevated px-3 py-1.5 text-sm text-fg-muted hover:border-accent hover:text-accent transition-colors no-underline"
+      <button
+        id="fullscreen-btn"
+        type="button"
+        class="inline-flex items-center gap-1 rounded-md border border-border bg-bg-elevated px-3 py-1.5 text-sm text-fg-muted hover:border-accent hover:text-accent transition-colors"
       >
-        Open fullscreen
-        <ArrowUpRight class="h-4 w-4" aria-hidden="true" />
-      </a>
+        Fullscreen
+        <Maximize class="h-4 w-4" aria-hidden="true" />
+      </button>
     </header>
 
     <div class="overflow-hidden rounded-xl border border-border bg-bg-elevated">
@@ -80,6 +81,12 @@ const { game } = Astro.props;
   // get an iframe sized to fit, so there's no nested scrollbar.
   const gameFrame = document.getElementById('game-frame') as HTMLIFrameElement;
   const frameOrigin = new URL(gameFrame.src).origin;
+
+  // Fullscreen the game in place — the page stays on /play/<slug>.
+  const fullscreenBtn = document.getElementById('fullscreen-btn');
+  fullscreenBtn?.addEventListener('click', () => {
+    gameFrame.requestFullscreen?.();
+  });
 
   window.addEventListener('message', (event) => {
     if (event.origin !== frameOrigin) return;

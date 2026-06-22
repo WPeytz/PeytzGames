@@ -38,7 +38,7 @@ export const GAMES: Game[] = [
     slug: 'blocks',
     title: 'Blocks',
     tagline: 'An original falling-block puzzle. How long can you survive?',
-    url: 'https://blocks.williampeytz.com',
+    url: 'https://peytzgames.com/games/blocks/',
     embed: true,
     year: 2026,
     status: 'live',
