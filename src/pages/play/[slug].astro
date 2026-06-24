@@ -88,6 +88,37 @@ const { game } = Astro.props;
     gameFrame.requestFullscreen?.();
   });
 
+  // Some embedded games (e.g. LastNameLegacy) autofocus an input when they
+  // load. Focusing an element inside a cross-origin iframe makes the browser
+  // scroll the parent page down to reveal it. Pin the page back to wherever
+  // the user was for a short window after the frame loads to cancel the jump.
+  gameFrame.addEventListener('load', () => {
+    const x = window.scrollX;
+    const y = window.scrollY;
+    const start = performance.now();
+    let active = true;
+    // If the user deliberately scrolls, stop fighting them.
+    const stop = () => {
+      active = false;
+    };
+    const opts = { passive: true } as AddEventListenerOptions;
+    window.addEventListener('wheel', stop, opts);
+    window.addEventListener('touchmove', stop, opts);
+    window.addEventListener('keydown', stop, opts);
+    const pin = () => {
+      if (!active) return cleanup();
+      if (window.scrollX !== x || window.scrollY !== y) window.scrollTo(x, y);
+      if (performance.now() - start < 600) requestAnimationFrame(pin);
+      else cleanup();
+    };
+    const cleanup = () => {
+      window.removeEventListener('wheel', stop, opts);
+      window.removeEventListener('touchmove', stop, opts);
+      window.removeEventListener('keydown', stop, opts);
+    };
+    requestAnimationFrame(pin);
+  });
+
   window.addEventListener('message', (event) => {
     if (event.origin !== frameOrigin) return;
     const msg = event.data;
