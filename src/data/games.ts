@@ -75,6 +75,7 @@ export const GAMES: Game[] = [
     year: 2026,
     status: 'live',
     sso: true,
+    thumbnail: '/thumbs/lastnamelegacy.svg',
   },
   {
     slug: 'eloquiz',

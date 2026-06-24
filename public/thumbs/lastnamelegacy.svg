@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" aria-label="Last Name Legacy">
+  <defs>
+    <linearGradient id="lnl-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1018"/>
+      <stop offset="1" stop-color="#070a10"/>
+    </linearGradient>
+    <linearGradient id="lnl-amber" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f59e0b"/>
+      <stop offset="1" stop-color="#fbbf24"/>
+    </linearGradient>
+    <radialGradient id="lnl-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#f59e0b" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#lnl-bg)"/>
+  <ellipse cx="400" cy="250" rx="380" ry="220" fill="url(#lnl-glow)"/>
+
+  <!-- brand label -->
+  <g font-family="'Geist', 'Inter', system-ui, sans-serif">
+    <text x="64" y="74" fill="#f59e0b" font-size="22" font-weight="700"
+      letter-spacing="3" text-transform="uppercase">LAST NAME LEGACY</text>
+  </g>
+
+  <!-- guess card -->
+  <rect x="64" y="110" width="672" height="248" rx="20"
+    fill="#11151e" stroke="#1f2733" stroke-width="2"/>
+
+  <g font-family="'Geist', 'Inter', system-ui, sans-serif">
+    <!-- prompt -->
+    <text x="100" y="172" fill="#8b94a6" font-size="20" font-weight="500">Who is…</text>
+
+    <!-- the surname (shown) -->
+    <text x="100" y="248" fill="#f5f7fb" font-size="76" font-weight="800"
+      letter-spacing="-1">EINSTEIN</text>
+
+    <!-- first-name guess line (blanked) -->
+    <text x="100" y="312" fill="#6b7585" font-size="20" font-weight="500">First name?</text>
+    <line x1="232" y1="306" x2="430" y2="306" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+    <rect x="436" y="288" width="4" height="26" rx="2" fill="#fbbf24"/>
+  </g>
+
+  <!-- AI score chip -->
+  <g transform="translate(560 150)">
+    <rect x="0" y="0" width="132" height="64" rx="14" fill="#0c1d16" stroke="#1f5740" stroke-width="2"/>
+    <circle cx="32" cy="32" r="18" fill="none" stroke="#10b981" stroke-width="5"
+      stroke-dasharray="90 113" stroke-linecap="round" transform="rotate(-90 32 32)"/>
+    <text x="60" y="28" font-family="'Geist','Inter',system-ui,sans-serif" fill="#6ee7b7" font-size="13" font-weight="600">AI score</text>
+    <text x="60" y="50" font-family="'Geist','Inter',system-ui,sans-serif" fill="#ecfdf5" font-size="22" font-weight="800">87</text>
+  </g>
+</svg>
