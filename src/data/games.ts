@@ -89,17 +89,6 @@ export const GAMES: Game[] = [
     hidden: true,
   },
   {
-    slug: 'peytzpvp',
-    title: 'PeytzPvP',
-    tagline:
-      'Hardcore Games-style PvP for Minecraft Paper servers. Arenas, kits, one winner.',
-    url: 'https://www.peytzpvp.com',
-    embed: true,
-    year: 2026,
-    status: 'live',
-    thumbnail: '/thumbs/peytzpvp.svg',
-  },
-  {
     slug: 'buildthefuture',
     title: 'BuildTheFuture',
     tagline:
@@ -123,5 +112,16 @@ export const GAMES: Game[] = [
     controls: 'A/D or ←/→ to move · Space/Enter to start or restart.',
     thumbnail: '/thumbs/liftoffjump.svg',
     leaderboard: true,
+  },
+  {
+    slug: 'peytzpvp',
+    title: 'PeytzPvP',
+    tagline:
+      'Hardcore Games-style PvP for Minecraft Paper servers. Arenas, kits, one winner.',
+    url: 'https://www.peytzpvp.com',
+    embed: true,
+    year: 2026,
+    status: 'live',
+    thumbnail: '/thumbs/peytzpvp.svg',
   },
 ];
