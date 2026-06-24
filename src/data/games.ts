@@ -58,6 +58,7 @@ export const GAMES: Game[] = [
     embed: true,
     year: 2026,
     status: 'live',
+    thumbnail: '/thumbs/liferunner.svg',
   },
   {
     slug: 'lastnamelegacy',
