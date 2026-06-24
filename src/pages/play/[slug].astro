@@ -45,6 +45,7 @@ const { game } = Astro.props;
         id="game-frame"
         src={game.url}
         title={game.title}
+        data-sso={game.sso ? 'true' : undefined}
         class="block h-[85vh] min-h-[640px] w-full border-0"
         allow="fullscreen; autoplay"
         loading="lazy"></iframe>
@@ -128,6 +129,50 @@ const { game } = Astro.props;
       gameFrame.style.minHeight = '0';
     }
   });
+</script>
+
+<script>
+  // Single sign-on bridge: for games that share PeytzGames' Supabase project
+  // (data-sso="true"), hand the host page's session into the iframe so the
+  // user never has to log in again inside the game. Tokens are sensitive, so
+  // every message is locked to the game's exact origin.
+  import { supabase } from '@/lib/supabase';
+
+  const ssoFrame = document.getElementById('game-frame') as HTMLIFrameElement;
+
+  if (ssoFrame?.dataset.sso === 'true') {
+    const targetOrigin = new URL(ssoFrame.src).origin;
+
+    function postToGame(message: unknown) {
+      ssoFrame.contentWindow?.postMessage(message, targetOrigin);
+    }
+
+    async function sendSession() {
+      const { data } = await supabase.auth.getSession();
+      const session = data.session;
+      if (session) {
+        postToGame({
+          type: 'peytz:session',
+          access_token: session.access_token,
+          refresh_token: session.refresh_token,
+        });
+      } else {
+        postToGame({ type: 'peytz:signout' });
+      }
+    }
+
+    // Push the session once the frame has loaded, and again whenever the
+    // login state changes (sign in, sign out, token refresh).
+    ssoFrame.addEventListener('load', sendSession);
+    supabase.auth.onAuthStateChange(() => sendSession());
+
+    // The game may finish booting after our first push; let it ask for the
+    // session when it's ready.
+    window.addEventListener('message', (event) => {
+      if (event.origin !== targetOrigin) return;
+      if (event.data?.type === 'peytz:session:request') sendSession();
+    });
+  }
 </script>
 
 <script>

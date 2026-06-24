@@ -22,6 +22,11 @@ export type Game = {
   /** Show an online leaderboard on the play page (the game must report
    * scores to the host page via postMessage). */
   leaderboard?: boolean;
+  /** Single sign-on: the embedded game shares PeytzGames' Supabase project,
+   * so the host page hands its session to the iframe via postMessage and the
+   * game never shows its own login. Only enable for games on the SAME
+   * Supabase project as PeytzGames. */
+  sso?: boolean;
 };
 
 export const GAMES: Game[] = [
@@ -69,6 +74,7 @@ export const GAMES: Game[] = [
     embed: true,
     year: 2026,
     status: 'live',
+    sso: true,
   },
   {
     slug: 'eloquiz',
