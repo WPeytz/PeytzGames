@@ -147,10 +147,32 @@ const { game } = Astro.props;
       ssoFrame.contentWindow?.postMessage(message, targetOrigin);
     }
 
-    async function sendSession() {
-      const { data } = await supabase.auth.getSession();
-      const session = data.session;
-      if (session) {
+    // Read the session straight from storage rather than
+    // supabase.auth.getSession(): in this embedding host page getSession() can
+    // hang on navigator.locks while authenticated, so the game's on-demand
+    // session request would silently never get answered — leaving logged-in
+    // users stuck on the game's "Sign in to Play" screen.
+    function readStoredSession(): { access_token?: string; refresh_token?: string } | null {
+      try {
+        const key = Object.keys(localStorage).find((k) =>
+          /^sb-.*-auth-token$/.test(k),
+        );
+        if (!key) return null;
+        let raw = localStorage.getItem(key);
+        if (!raw) return null;
+        if (raw.startsWith('base64-')) raw = atob(raw.slice(7));
+        const parsed = JSON.parse(raw);
+        if (parsed?.access_token) return parsed;
+        if (parsed?.currentSession?.access_token) return parsed.currentSession;
+        return null;
+      } catch {
+        return null;
+      }
+    }
+
+    function sendSession() {
+      const session = readStoredSession();
+      if (session?.access_token && session?.refresh_token) {
         postToGame({
           type: 'peytz:session',
           access_token: session.access_token,
