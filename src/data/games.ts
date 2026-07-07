@@ -31,6 +31,18 @@ export type Game = {
 
 export const GAMES: Game[] = [
   {
+    slug: 'worldeater',
+    title: 'World Eater',
+    tagline:
+      'An eat-and-grow speedrun. Devour a tiny world region by region — backyard to city to mountaintop — then swallow the World Core. Race the clock, dodge cats, cars and tanks.',
+    url: 'https://peytzgames.com/games/worldeater/',
+    embed: true,
+    year: 2026,
+    status: 'live',
+    controls: 'WASD or arrows to move · eat things smaller than you · R to restart · M to mute.',
+    thumbnail: '/thumbs/worldeater.svg',
+  },
+  {
     slug: 'gravityflipper',
     title: 'GravityFlipper',
     tagline:
