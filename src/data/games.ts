@@ -82,10 +82,11 @@ export const GAMES: Game[] = [
     title: 'LastNameLegacy',
     tagline:
       'I show you a famous surname, you guess the first name. Scored by AI.',
-    url: 'https://lastnamelegacy.com',
+    url: 'https://lastnamelegacy.com/play?mode=historical',
     embed: true,
     year: 2026,
     status: 'live',
+    controls: 'Type everything you know about the person, then submit for an AI score.',
     sso: true,
     thumbnail: '/thumbs/lastnamelegacy.svg',
   },
