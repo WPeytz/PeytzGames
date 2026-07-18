@@ -22,6 +22,10 @@ export type Game = {
   /** Show an online leaderboard on the play page (the game must report
    * scores to the host page via postMessage). */
   leaderboard?: boolean;
+  /** How leaderboard scores are interpreted. 'points' (default): higher is
+   * better, shown as a number. 'time': the score is milliseconds, lower is
+   * better, shown as M:SS.mmm. */
+  scoreKind?: 'points' | 'time';
   /** Single sign-on: the embedded game shares PeytzGames' Supabase project,
    * so the host page hands its session to the iframe via postMessage and the
    * game never shows its own login. Only enable for games on the SAME
@@ -30,6 +34,20 @@ export type Game = {
 };
 
 export const GAMES: Game[] = [
+  {
+    slug: 'labyrinth-escape',
+    title: 'Labyrinth Escape',
+    tagline:
+      'Race through eight ever-changing mazes, each with a world of its own. Find the light and escape as fast as you can.',
+    url: 'https://peytzgames.com/games/labyrinth-escape/',
+    embed: true,
+    year: 2026,
+    status: 'live',
+    controls: 'WASD or arrows to move · swipe or use the on-screen controls on mobile.',
+    thumbnail: '/thumbs/labyrinth-escape.svg',
+    leaderboard: true,
+    scoreKind: 'time',
+  },
   {
     slug: 'worldeater',
     title: 'World Eater',

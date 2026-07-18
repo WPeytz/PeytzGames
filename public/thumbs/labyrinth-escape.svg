@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-labelledby="title desc">
+  <title id="title">Labyrinth Escape</title>
+  <desc id="desc">A glowing maze with a bright escape portal.</desc>
+  <defs>
+    <radialGradient id="bg" cx="52%" cy="48%" r="75%">
+      <stop offset="0" stop-color="#14334a"/>
+      <stop offset="1" stop-color="#06101d"/>
+    </radialGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#b9fff1"/>
+      <stop offset="1" stop-color="#48b7ac"/>
+    </linearGradient>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="30"/></filter>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)"/>
+  <circle cx="645" cy="95" r="100" fill="#f5d96b" opacity=".08" filter="url(#soft)"/>
+  <g fill="none" stroke="url(#wall)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity=".92" filter="url(#glow)">
+    <path d="M115 76h570v298H115z"/>
+    <path d="M174 76v62h104v58H174v118h62v60M338 76v62h115v58H338v60h57v118M516 76v120h112v60H516v58h112M115 256h59M236 314h102M453 196v118h63M628 256h57"/>
+  </g>
+  <circle cx="145" cy="106" r="13" fill="#fff" filter="url(#glow)"/>
+  <circle cx="655" cy="344" r="18" fill="#f5d96b" filter="url(#glow)"/>
+  <path d="M145 133v34h28" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="4 8" opacity=".5"/>
+  <text x="400" y="418" fill="#eefcff" font-family="Arial, sans-serif" font-size="29" font-weight="700" letter-spacing="8" text-anchor="middle">LABYRINTH ESCAPE</text>
+</svg>

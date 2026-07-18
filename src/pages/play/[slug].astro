@@ -11,6 +11,18 @@ export function getStaticPaths() {
 }
 
 const { game } = Astro.props;
+const configuredGameUrl = new URL(game.url);
+const isPeytzGamesHosted = ['peytzgames.com', 'www.peytzgames.com'].includes(
+  configuredGameUrl.hostname,
+);
+const gameUrl = import.meta.env.DEV && isPeytzGamesHosted
+  ? configuredGameUrl.pathname.endsWith('/')
+    ? `${configuredGameUrl.pathname}index.html`
+    : configuredGameUrl.pathname
+  : game.url;
+const gameOrigin = import.meta.env.DEV && isPeytzGamesHosted
+  ? Astro.url.origin
+  : configuredGameUrl.origin;
 ---
 
 <BaseLayout title={game.title} description={game.tagline}>
@@ -43,7 +55,7 @@ const { game } = Astro.props;
     <div class="overflow-hidden rounded-xl border border-border bg-bg-elevated">
       <iframe
         id="game-frame"
-        src={game.url}
+        src={gameUrl}
         title={game.title}
         data-sso={game.sso ? 'true' : undefined}
         class="block h-[85vh] min-h-[640px] w-full border-0"
@@ -56,7 +68,8 @@ const { game } = Astro.props;
         <div
           id="leaderboard"
           data-game={game.slug}
-          data-origin={new URL(game.url).origin}
+          data-origin={gameOrigin}
+          data-kind={game.scoreKind ?? 'points'}
           class="mt-8 max-w-md"
         >
           <div class="flex items-baseline justify-between gap-4">
@@ -205,8 +218,19 @@ const { game } = Astro.props;
   if (root) {
     const gameSlug = root.dataset.game!;
     const gameOrigin = root.dataset.origin!;
+    // 'time' scores are milliseconds where lower is better (speedruns);
+    // default 'points' scores are higher-is-better numbers.
+    const isTime = root.dataset.kind === 'time';
     const list = document.getElementById('lb-list')!;
     const status = document.getElementById('lb-status')!;
+
+    function formatScore(score: number): string {
+      if (!isTime) return score.toLocaleString();
+      const minutes = Math.floor(score / 60000);
+      const seconds = Math.floor((score % 60000) / 1000);
+      const millis = score % 1000;
+      return `${minutes}:${String(seconds).padStart(2, '0')}.${String(millis).padStart(3, '0')}`;
+    }
 
     async function loadLeaderboard() {
       // Pull extra rows, then keep each player's best score.
@@ -214,7 +238,7 @@ const { game } = Astro.props;
         .from('scores')
         .select('score, profiles(username)')
         .eq('game', gameSlug)
-        .order('score', { ascending: false })
+        .order('score', { ascending: isTime })
         .limit(50);
 
       if (error || !data) {
@@ -242,7 +266,7 @@ const { game } = Astro.props;
                       <span class="w-5 text-right text-fg-subtle">${i + 1}</span>
                       <span class="text-fg">${name.replace(/[<>&]/g, '')}</span>
                     </span>
-                    <span class="font-medium text-accent-alt">${score.toLocaleString()}</span>
+                    <span class="font-medium text-accent-alt">${formatScore(score)}</span>
                   </li>`,
               )
               .join('');
@@ -261,7 +285,7 @@ const { game } = Astro.props;
         score,
       });
       if (!error) {
-        status.textContent = `Score saved: ${score.toLocaleString()}`;
+        status.textContent = `${isTime ? 'Time' : 'Score'} saved: ${formatScore(score)}`;
         loadLeaderboard();
       }
     }
